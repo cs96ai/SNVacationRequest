@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_email_template">
+  <sys_email_template action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_approved</name>
+    <subject>Your vacation request has been approved</subject>
+    <message_html><![CDATA[
+      Hello ${employee_name},<br/>
+      <br/>
+      Your vacation request from ${start_date} to ${end_date} has been <b>approved</b>.<br/>
+      <br/>
+      Thank you,<br/>
+      Humber River IT
+    ]]></message_html>
+  </sys_email_template>
+</record_update>

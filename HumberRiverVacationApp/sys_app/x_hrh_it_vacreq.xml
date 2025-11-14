@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_app">
+  <sys_app action="INSERT_OR_UPDATE">
+    <scope>x_hrh_it_vacreq</scope>
+    <name>Humber River IT Vacation Requests</name>
+    <label>Humber River IT Vacation Requests</label>
+    <short_description>Vacation request system for IT department</short_description>
+    <description>Vacation request system for the IT department at Humber River Health.</description>
+    <source>HumberRiver</source>
+    <sys_class_name>sys_app</sys_class_name>
+    <trackable>true</trackable>
+    <unloadable>true</unloadable>
+  </sys_app>
+</record_update>

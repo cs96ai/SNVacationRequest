@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="wf_workflow">
+  <wf_workflow action="INSERT_OR_UPDATE">
+    <name>IT Vacation Request Approval</name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <description>Approval workflow for IT vacation requests.</description>
+  </wf_workflow>
+</record_update>

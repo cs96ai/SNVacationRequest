@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_db_object">
+  <sys_db_object action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <label>IT Vacation Request</label>
+    <extends>task</extends>
+    <is_extendable>false</is_extendable>
+    <super_class>task</super_class>
+    <scope>x_hrh_it_vacreq</scope>
+  </sys_db_object>
+</record_update>

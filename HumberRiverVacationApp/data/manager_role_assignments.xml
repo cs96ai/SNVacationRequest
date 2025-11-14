@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records>
+  <sys_user_has_role>
+    <user email="gmercieca@hrh.ca"/>
+    <role name="x_hrh_it_vacreq_manager"/>
+    <state>active</state>
+  </sys_user_has_role>
+  <sys_user_has_role>
+    <user email="okhan@hrh.ca"/>
+    <role name="x_hrh_it_vacreq_manager"/>
+    <state>active</state>
+  </sys_user_has_role>
+</records>

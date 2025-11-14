@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_user_role">
+  <sys_user_role action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_hr_records</name>
+    <description>Read-only HR records role for vacation reporting.</description>
+    <sys_name>x_hrh_it_vacreq_hr_records</sys_name>
+    <elevated_privileges>false</elevated_privileges>
+  </sys_user_role>
+</record_update>

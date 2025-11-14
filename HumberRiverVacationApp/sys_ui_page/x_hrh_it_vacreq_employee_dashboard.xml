@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_page">
+  <sys_ui_page action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_employee_dashboard</name>
+    <html><![CDATA[
+      <h2>My Vacation Requests</h2>
+      <!-- Configure UI Macro or widget in Studio to render list for x_hrh_it_vacreq_vacation_requests filtered by current user -->
+    ]]></html>
+  </sys_ui_page>
+</record_update>

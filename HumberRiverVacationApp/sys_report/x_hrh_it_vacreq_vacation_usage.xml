@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_report">
+  <sys_report action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_usage</name>
+    <title>IT Vacation Usage Summary</title>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <groupby>employee</groupby>
+  </sys_report>
+</record_update>

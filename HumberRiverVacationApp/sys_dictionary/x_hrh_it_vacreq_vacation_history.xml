@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_dictionary">
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_history</name>
+    <element>vacation_request</element>
+    <internal_type>reference</internal_type>
+    <reference>x_hrh_it_vacreq_vacation_requests</reference>
+    <label>Vacation Request</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_history</name>
+    <element>change_description</element>
+    <internal_type>string</internal_type>
+    <max_length>255</max_length>
+    <label>Change Description</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_history</name>
+    <element>changed_by</element>
+    <internal_type>reference</internal_type>
+    <reference>sys_user</reference>
+    <label>Changed By</label>
+  </sys_dictionary>
+</record_update>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_security_acl">
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests.read</name>
+    <type>record</type>
+    <operation>read</operation>
+    <sys_name>x_hrh_it_vacreq_vacation_requests.read</sys_name>
+    <script>
+      // Employees can see own; managers and HR can see more (refine in Studio)
+      answer = gs.hasRole('x_hrh_it_vacreq_manager') || gs.hasRole('x_hrh_it_vacreq_hr_records') || current.employee == gs.getUserID();
+    </script>
+  </sys_security_acl>
+</record_update>

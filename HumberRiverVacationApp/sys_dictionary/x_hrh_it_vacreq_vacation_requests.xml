@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_dictionary">
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>employee</element>
+    <internal_type>reference</internal_type>
+    <reference>sys_user</reference>
+    <label>Employee</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>employee_name</element>
+    <internal_type>string</internal_type>
+    <max_length>100</max_length>
+    <label>Employee Name</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>start_date</element>
+    <internal_type>date</internal_type>
+    <label>Start Date</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>end_date</element>
+    <internal_type>date</internal_type>
+    <label>End Date</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>hours_requested</element>
+    <internal_type>float</internal_type>
+    <label>Hours Requested</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>notes</element>
+    <internal_type>journal_input</internal_type>
+    <label>Notes</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>status</element>
+    <internal_type>choice</internal_type>
+    <label>Status</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>decline_reason</element>
+    <internal_type>string</internal_type>
+    <max_length>255</max_length>
+    <label>Decline Reason</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>remaining_hours</element>
+    <internal_type>float</internal_type>
+    <read_only>true</read_only>
+    <label>Remaining Hours</label>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>remaining_days</element>
+    <internal_type>float</internal_type>
+    <read_only>true</read_only>
+    <label>Remaining Days</label>
+  </sys_dictionary>
+</record_update>
