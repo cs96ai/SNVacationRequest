@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sysevent_email_action">
+  <sysevent_email_action action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq.vacation.declined</name>
+    <event_name>x_hrh_it_vacreq.vacation.declined</event_name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <active>true</active>
+    <recipient_fields>employee</recipient_fields>
+    <subject>Your vacation request has been declined</subject>
+    <message_html><![CDATA[
+      Hello ${employee.first_name} ${employee.last_name},<br/>
+      <br/>
+      Your vacation request from ${start_date} to ${end_date} has been <b>declined</b>.<br/>
+      <br/>
+      <b>Reason:</b> ${decline_reason}<br/>
+      <br/>
+      Please contact your manager if you have any questions.<br/>
+      <br/>
+      Thank you,<br/>
+      Humber River IT
+    ]]></message_html>
+  </sysevent_email_action>
+</record_update>

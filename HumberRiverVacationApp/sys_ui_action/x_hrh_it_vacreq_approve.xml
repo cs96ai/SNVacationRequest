@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_action">
+  <sys_ui_action action="INSERT_OR_UPDATE">
+    <name>Approve</name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <action_name>approve_request</action_name>
+    <client>false</client>
+    <form_button>true</form_button>
+    <condition>current.status == 'pending' &amp;&amp; gs.hasRole('x_hrh_it_vacreq_manager')</condition>
+    <script><![CDATA[
+      (function() {
+        current.status = 'approved';
+        current.update();
+        
+        // Trigger calendar sync
+        var calSync = new x_hrh_it_vacreq_CalendarSync();
+        calSync.syncToCalendar(current);
+        
+        // Send notification to employee
+        gs.eventQueue('x_hrh_it_vacreq.vacation.approved', current, gs.getUserID(), gs.getUserName());
+        
+        // Send notification to Diana Moretti (HR records)
+        gs.eventQueue('x_hrh_it_vacreq.vacation.approved.hr', current, gs.getUserID(), gs.getUserName());
+        
+        action.setRedirectURL(current);
+      })();
+    ]]></script>
+  </sys_ui_action>
+</record_update>

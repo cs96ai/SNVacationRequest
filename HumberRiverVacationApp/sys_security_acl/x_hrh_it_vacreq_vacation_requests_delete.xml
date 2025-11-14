@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_security_acl">
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests.delete</name>
+    <type>record</type>
+    <operation>delete</operation>
+    <sys_name>x_hrh_it_vacreq_vacation_requests.delete</sys_name>
+    <script>
+      // Only managers can delete requests
+      answer = gs.hasRole('x_hrh_it_vacreq_manager');
+    </script>
+  </sys_security_acl>
+</record_update>

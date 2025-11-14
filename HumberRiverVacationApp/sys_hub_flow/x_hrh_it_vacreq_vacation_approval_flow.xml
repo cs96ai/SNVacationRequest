@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_hub_flow">
+  <sys_hub_flow action="INSERT_OR_UPDATE">
+    <name>IT Vacation Request Approval Flow</name>
+    <description>Flow Designer flow for IT vacation request approval with reminders and escalations</description>
+    <trigger_type>record</trigger_type>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <condition>status=pending</condition>
+    <active>true</active>
+    <flow_definition><![CDATA[
+      {
+        "trigger": {
+          "type": "record.inserted",
+          "table": "x_hrh_it_vacreq_vacation_requests",
+          "condition": "status=pending"
+        },
+        "actions": [
+          {
+            "id": "route_to_manager",
+            "type": "approval",
+            "name": "Route to Manager",
+            "approver": "{{trigger.employee.manager || 'gmercieca@hrh.ca,okhan@hrh.ca'}}",
+            "journal_field": "work_notes",
+            "timeout": "7 days"
+          },
+          {
+            "id": "reminder_timer",
+            "type": "wait",
+            "name": "Wait 3 Days",
+            "duration": "3 days",
+            "next": "send_reminder"
+          },
+          {
+            "id": "send_reminder",
+            "type": "event",
+            "name": "Send Reminder",
+            "event": "x_hrh_it_vacreq.vacation.reminder",
+            "condition": "{{trigger.status == 'pending'}}"
+          },
+          {
+            "id": "escalation_timer",
+            "type": "wait",
+            "name": "Wait 7 Days",
+            "duration": "7 days",
+            "next": "send_escalation"
+          },
+          {
+            "id": "send_escalation",
+            "type": "event",
+            "name": "Send Escalation",
+            "event": "x_hrh_it_vacreq.vacation.escalation",
+            "condition": "{{trigger.status == 'pending'}}"
+          },
+          {
+            "id": "on_approval",
+            "type": "script",
+            "name": "On Approval",
+            "condition": "{{trigger.status == 'approved'}}",
+            "script": "var calSync = new x_hrh_it_vacreq_CalendarSync(); calSync.syncToCalendar(trigger); gs.eventQueue('x_hrh_it_vacreq.vacation.approved', trigger); gs.eventQueue('x_hrh_it_vacreq.vacation.approved.hr', trigger);"
+          },
+          {
+            "id": "on_decline",
+            "type": "script",
+            "name": "On Decline",
+            "condition": "{{trigger.status == 'declined'}}",
+            "script": "gs.eventQueue('x_hrh_it_vacreq.vacation.declined', trigger);"
+          }
+        ]
+      }
+    ]]></flow_definition>
+  </sys_hub_flow>
+</record_update>

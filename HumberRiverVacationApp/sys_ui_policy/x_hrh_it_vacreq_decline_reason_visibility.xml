@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_policy">
+  <sys_ui_policy action="INSERT_OR_UPDATE">
+    <name>Show Decline Reason when Declined</name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <active>true</active>
+    <on_load>true</on_load>
+    <conditions>status=declined</conditions>
+    <sys_ui_policy_action>
+      <field>decline_reason</field>
+      <visible>true</visible>
+      <mandatory>true</mandatory>
+    </sys_ui_policy_action>
+  </sys_ui_policy>
+  <sys_ui_policy action="INSERT_OR_UPDATE">
+    <name>Hide Decline Reason when not Declined</name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <active>true</active>
+    <on_load>true</on_load>
+    <conditions>status!=declined</conditions>
+    <sys_ui_policy_action>
+      <field>decline_reason</field>
+      <visible>false</visible>
+      <mandatory>false</mandatory>
+    </sys_ui_policy_action>
+  </sys_ui_policy>
+</record_update>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_policy">
+  <sys_ui_policy action="INSERT_OR_UPDATE">
+    <name>Mobile Responsive Fields</name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <active>true</active>
+    <on_load>true</on_load>
+    <applies_to>mobile</applies_to>
+    <description>Optimize field visibility for mobile devices</description>
+  </sys_ui_policy>
+</record_update>

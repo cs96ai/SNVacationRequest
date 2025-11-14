@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_action">
+  <sys_ui_action action="INSERT_OR_UPDATE">
+    <name>Decline</name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <action_name>decline_request</action_name>
+    <client>true</client>
+    <form_button>true</form_button>
+    <condition>current.status == 'pending' &amp;&amp; gs.hasRole('x_hrh_it_vacreq_manager')</condition>
+    <script><![CDATA[
+      function declineRequest() {
+        var reason = prompt('Please enter the reason for declining this request:');
+        if (reason && reason.trim() !== '') {
+          var ga = new GlideAjax('x_hrh_it_vacreq_ApprovalActions');
+          ga.addParam('sysparm_name', 'declineRequest');
+          ga.addParam('sysparm_request_id', g_form.getUniqueValue());
+          ga.addParam('sysparm_reason', reason);
+          ga.getXMLAnswer(function(response) {
+            if (response === 'success') {
+              g_form.addInfoMessage('Request declined successfully');
+              g_form.reload();
+            } else {
+              g_form.addErrorMessage('Failed to decline request');
+            }
+          });
+        }
+      }
+      declineRequest();
+    ]]></script>
+  </sys_ui_action>
+</record_update>

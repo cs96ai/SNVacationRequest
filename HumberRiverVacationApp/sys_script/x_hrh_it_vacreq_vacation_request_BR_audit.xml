@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script">
+  <sys_script action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_request_audit</name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <when>after</when>
+    <insert>false</insert>
+    <update>true</update>
+    <filter_condition/>
+    <script><![CDATA[
+      (function executeRule(current, previous) {
+        // Log changes to history table
+        if (current.status.changes() || current.decline_reason.changes()) {
+          var history = new GlideRecord('x_hrh_it_vacreq_vacation_history');
+          history.initialize();
+          history.vacation_request = current.sys_id;
+          history.changed_by = gs.getUserID();
+          
+          var changeDesc = '';
+          if (current.status.changes()) {
+            changeDesc += 'Status changed from ' + previous.status + ' to ' + current.status;
+          }
+          if (current.decline_reason.changes()) {
+            if (changeDesc) changeDesc += '; ';
+            changeDesc += 'Decline reason: ' + current.decline_reason;
+          }
+          
+          history.change_description = changeDesc;
+          history.insert();
+        }
+      })(current, previous);
+    ]]></script>
+  </sys_script>
+</record_update>

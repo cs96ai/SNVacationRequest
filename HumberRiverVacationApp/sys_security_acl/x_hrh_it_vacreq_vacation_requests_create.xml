@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_security_acl">
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests.create</name>
+    <type>record</type>
+    <operation>create</operation>
+    <sys_name>x_hrh_it_vacreq_vacation_requests.create</sys_name>
+    <script>
+      // Any employee with the role can create requests
+      answer = gs.hasRole('x_hrh_it_vacreq_employee');
+    </script>
+  </sys_security_acl>
+</record_update>

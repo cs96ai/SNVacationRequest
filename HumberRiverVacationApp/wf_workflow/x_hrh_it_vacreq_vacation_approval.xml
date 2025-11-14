@@ -3,6 +3,80 @@
   <wf_workflow action="INSERT_OR_UPDATE">
     <name>IT Vacation Request Approval</name>
     <table>x_hrh_it_vacreq_vacation_requests</table>
-    <description>Approval workflow for IT vacation requests.</description>
+    <description>Approval workflow for IT vacation requests with reminders and escalations.</description>
+    <condition>current.status == 'pending'</condition>
+    <workflow_version action="INSERT_OR_UPDATE">
+      <name>IT Vacation Request Approval v1</name>
+      <published>true</published>
+      <wf_activity action="INSERT_OR_UPDATE">
+        <name>Route to Manager</name>
+        <activity_definition>com.glide.workflow.approval</activity_definition>
+        <description>Route to employee's manager or default managers</description>
+        <script><![CDATA[
+          // Determine approver: employee's manager or default to Grace/Othman
+          var approver = current.employee.manager;
+          if (!approver) {
+            // Default to Grace Mercieca and Othman Khan
+            var grUser = new GlideRecord('sys_user');
+            grUser.addQuery('email', 'IN', 'gmercieca@hrh.ca,okhan@hrh.ca');
+            grUser.query();
+            while (grUser.next()) {
+              workflow.scratchpad.approver = grUser.sys_id;
+              break;
+            }
+          } else {
+            workflow.scratchpad.approver = approver;
+          }
+        ]]></script>
+      </wf_activity>
+      <wf_activity action="INSERT_OR_UPDATE">
+        <name>3-Day Reminder Timer</name>
+        <activity_definition>com.glide.workflow.timer</activity_definition>
+        <description>Send reminder after 3 days if still pending</description>
+        <duration>259200</duration>
+        <script><![CDATA[
+          if (current.status == 'pending') {
+            gs.eventQueue('x_hrh_it_vacreq.vacation.reminder', current, gs.getUserID(), gs.getUserName());
+          }
+        ]]></script>
+      </wf_activity>
+      <wf_activity action="INSERT_OR_UPDATE">
+        <name>7-Day Escalation Timer</name>
+        <activity_definition>com.glide.workflow.timer</activity_definition>
+        <description>Escalate after 7 days if still pending</description>
+        <duration>604800</duration>
+        <script><![CDATA[
+          if (current.status == 'pending') {
+            gs.eventQueue('x_hrh_it_vacreq.vacation.escalation', current, gs.getUserID(), gs.getUserName());
+          }
+        ]]></script>
+      </wf_activity>
+      <wf_activity action="INSERT_OR_UPDATE">
+        <name>On Approval</name>
+        <activity_definition>com.glide.workflow.script</activity_definition>
+        <description>Execute on approval: sync calendar and send notifications</description>
+        <script><![CDATA[
+          if (current.status == 'approved') {
+            // Sync to calendar
+            var calSync = new x_hrh_it_vacreq_CalendarSync();
+            calSync.syncToCalendar(current);
+            
+            // Send notifications
+            gs.eventQueue('x_hrh_it_vacreq.vacation.approved', current, gs.getUserID(), gs.getUserName());
+            gs.eventQueue('x_hrh_it_vacreq.vacation.approved.hr', current, gs.getUserID(), gs.getUserName());
+          }
+        ]]></script>
+      </wf_activity>
+      <wf_activity action="INSERT_OR_UPDATE">
+        <name>On Decline</name>
+        <activity_definition>com.glide.workflow.script</activity_definition>
+        <description>Execute on decline: send notification</description>
+        <script><![CDATA[
+          if (current.status == 'declined') {
+            gs.eventQueue('x_hrh_it_vacreq.vacation.declined', current, gs.getUserID(), gs.getUserName());
+          }
+        ]]></script>
+      </wf_activity>
+    </workflow_version>
   </wf_workflow>
 </record_update>

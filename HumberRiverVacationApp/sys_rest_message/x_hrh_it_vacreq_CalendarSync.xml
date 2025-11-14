@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_rest_message">
+  <sys_rest_message action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq.CalendarSync</name>
+    <description>Calendar Sync API (e.g., Microsoft Graph for Outlook)</description>
+    <rest_endpoint>https://graph.microsoft.com/v1.0/users/${userPrincipalName}/calendar/events</rest_endpoint>
+    <use_basic_auth>false</use_basic_auth>
+    <use_mutual_auth>false</use_mutual_auth>
+    <sys_rest_message_fn action="INSERT_OR_UPDATE">
+      <function_name>post</function_name>
+      <http_method>post</http_method>
+      <rest_endpoint>https://graph.microsoft.com/v1.0/users/${userPrincipalName}/calendar/events</rest_endpoint>
+      <use_basic_auth>false</use_basic_auth>
+    </sys_rest_message_fn>
+  </sys_rest_message>
+</record_update>

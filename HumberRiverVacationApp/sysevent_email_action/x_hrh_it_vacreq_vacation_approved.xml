@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sysevent_email_action">
+  <sysevent_email_action action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq.vacation.approved</name>
+    <event_name>x_hrh_it_vacreq.vacation.approved</event_name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <active>true</active>
+    <recipient_fields>employee</recipient_fields>
+    <cc_list>dmoretti@hrh.ca</cc_list>
+    <subject>Your vacation request has been approved</subject>
+    <message_html><![CDATA[
+      Hello ${employee.first_name} ${employee.last_name},<br/>
+      <br/>
+      Your vacation request from ${start_date} to ${end_date} has been <b>approved</b>.<br/>
+      <br/>
+      Hours requested: ${hours_requested}<br/>
+      <br/>
+      Thank you,<br/>
+      Humber River IT
+    ]]></message_html>
+  </sysevent_email_action>
+</record_update>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_choice">
+  <sys_choice action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>status</element>
+    <value>pending</value>
+    <label>Pending</label>
+    <sequence>10</sequence>
+  </sys_choice>
+  <sys_choice action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>status</element>
+    <value>approved</value>
+    <label>Approved</label>
+    <sequence>20</sequence>
+  </sys_choice>
+  <sys_choice action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>status</element>
+    <value>declined</value>
+    <label>Declined</label>
+    <sequence>30</sequence>
+  </sys_choice>
+</record_update>

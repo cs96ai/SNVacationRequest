@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_form">
+  <sys_ui_form action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <view>approval</view>
+    <sys_ui_section>
+      <caption>Request Details</caption>
+      <fields>
+        <field>employee</field>
+        <field>employee_name</field>
+        <field>start_date</field>
+        <field>end_date</field>
+        <field>hours_requested</field>
+        <field>notes</field>
+        <field>status</field>
+        <field>decline_reason</field>
+      </fields>
+    </sys_ui_section>
+    <sys_ui_section>
+      <caption>Balance Information</caption>
+      <fields>
+        <field>remaining_hours</field>
+        <field>remaining_days</field>
+      </fields>
+    </sys_ui_section>
+    <sys_ui_section>
+      <caption>Overlapping Vacations (±2 weeks)</caption>
+      <fields>
+        <field>overlapping_vacations_html</field>
+      </fields>
+    </sys_ui_section>
+    <sys_ui_section>
+      <caption>Scheduled IT Changes</caption>
+      <fields>
+        <field>it_changes_html</field>
+      </fields>
+    </sys_ui_section>
+  </sys_ui_form>
+</record_update>

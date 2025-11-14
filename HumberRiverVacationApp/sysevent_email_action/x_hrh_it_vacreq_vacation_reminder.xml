@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sysevent_email_action">
+  <sysevent_email_action action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq.vacation.reminder</name>
+    <event_name>x_hrh_it_vacreq.vacation.reminder</event_name>
+    <table>x_hrh_it_vacreq_vacation_requests</table>
+    <active>true</active>
+    <recipient_fields>employee.manager</recipient_fields>
+    <subject>Reminder: Pending IT Vacation Request - ${employee.name}</subject>
+    <message_html><![CDATA[
+      Hello,<br/>
+      <br/>
+      This is a reminder that the following IT vacation request is still pending approval:<br/>
+      <br/>
+      <b>Employee:</b> ${employee.first_name} ${employee.last_name}<br/>
+      <b>Start Date:</b> ${start_date}<br/>
+      <b>End Date:</b> ${end_date}<br/>
+      <b>Hours Requested:</b> ${hours_requested}<br/>
+      <b>Submitted:</b> ${sys_created_on}<br/>
+      <br/>
+      Please review and approve/decline at your earliest convenience.<br/>
+      <br/>
+      Thank you,<br/>
+      Humber River IT Vacation System
+    ]]></message_html>
+  </sysevent_email_action>
+</record_update>

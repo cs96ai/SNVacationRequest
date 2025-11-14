@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_dictionary">
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>overlapping_vacations_html</element>
+    <internal_type>html</internal_type>
+    <label>Overlapping Vacations</label>
+    <read_only>true</read_only>
+  </sys_dictionary>
+  <sys_dictionary action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_requests</name>
+    <element>it_changes_html</element>
+    <internal_type>html</internal_type>
+    <label>Scheduled IT Changes</label>
+    <read_only>true</read_only>
+  </sys_dictionary>
+</record_update>
