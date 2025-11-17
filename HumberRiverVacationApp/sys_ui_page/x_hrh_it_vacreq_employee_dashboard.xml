@@ -4,7 +4,20 @@
     <name>x_hrh_it_vacreq_employee_dashboard</name>
     <html><![CDATA[
       <h2>My Vacation Requests</h2>
-      <!-- Configure UI Macro or widget in Studio to render list for x_hrh_it_vacreq_vacation_requests filtered by current user -->
+      <p>Remaining Balance: <span id="remaining_balance"></span> days (<span id="remaining_hours"></span> hours)</p>
+      <button onclick="gsftSubmit(null, g_form.getFormElement(), 'new_request')">Submit New Request</button>
+      <g:list_view table="x_hrh_it_vacreq_vacation_requests" filter="employee=javascript:gs.getUserID()^statusINPending,Approved,Declined" fields="start_date,end_date,status,notes" order_by="start_date" />
+      <script>
+        // Client script to fetch and display balance (using existing HRBalanceAPI via GlideAjax)
+        var ga = new GlideAjax('x_hrh_it_vacreq_HRBalanceAPI');
+        ga.addParam('sysparm_name', 'getBalance');
+        ga.getXML(function(response) {
+          var balance = response.responseXML.documentElement.getAttribute('remaining_days');
+          var hours = response.responseXML.documentElement.getAttribute('remaining_hours');
+          document.getElementById('remaining_balance').innerText = balance;
+          document.getElementById('remaining_hours').innerText = hours;
+        });
+      </script>
     ]]></html>
   </sys_ui_page>
 </record_update>

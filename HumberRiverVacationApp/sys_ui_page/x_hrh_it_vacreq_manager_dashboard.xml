@@ -1,0 +1,28 @@
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;record_update table="sys_ui_page"&gt;
+  &lt;sys_ui_page action="INSERT_OR_UPDATE"&gt;
+    &lt;name&gt;x_hrh_it_vacreq_manager_dashboard&lt;/name&gt;
+    &lt;html&gt;&lt;![CDATA[
+      &lt;h2&gt;Team Vacation Requests&lt;/h2&gt;
+      &lt;g:list_view table="x_hrh_it_vacreq_vacation_requests" filter="status=Pending^assigned_to=javascript:gs.getUserID()" fields="employee,start_date,end_date,notes" order_by="start_date" /&gt;
+      &lt;h3&gt;Team Calendar&lt;/h3&gt;
+      &lt;!-- Embed a simple calendar widget or use existing CalendarSync for a view --&gt;
+      &lt;div id="team_calendar"&gt;&lt;/div&gt;
+      &lt;script&gt;
+        // Script to populate calendar with approved vacations (using OverlapAPI)
+        var ga = new GlideAjax('x_hrh_it_vacreq_OverlapAPI');
+        ga.addParam('sysparm_name', 'getTeamOverlaps');
+        ga.getXML(function(response) {
+          // Parse and render overlaps in #team_calendar (e.g., as a table or integrate with a calendar lib)
+          var overlaps = response.responseXML.getElementsByTagName('overlap');
+          var html = '&lt;table&gt;&lt;tr&gt;&lt;th&gt;Employee&lt;/th&gt;&lt;th&gt;Dates&lt;/th&gt;&lt;/tr&gt;';
+          for (var i = 0; i &lt; overlaps.length; i++) {
+            html += '&lt;tr&gt;&lt;td&gt;' + overlaps[i].getAttribute('employee') + '&lt;/td&gt;&lt;td&gt;' + overlaps[i].getAttribute('dates') + '&lt;/td&gt;&lt;/tr&gt;';
+          }
+          html += '&lt;/table&gt;';
+          document.getElementById('team_calendar').innerHTML = html;
+        });
+      &lt;/script&gt;
+    ]]&gt;&lt;/html&gt;
+  &lt;/sys_ui_page&gt;
+&lt;/record_update&gt;
