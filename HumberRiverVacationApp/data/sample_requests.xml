@@ -7,4 +7,38 @@
     <end_date>2025-11-25</end_date>
     <status>Approved</status>
   </x_hrh_it_vacreq_vacation_requests>
+  <x_hrh_it_vacreq_vacation_requests>
+    <employee email="jdoe@hrh.ca"/>
+    <employee_name>John Doe</employee_name>
+    <start_date>2025-12-01</start_date>
+    <end_date>2025-12-05</end_date>
+    <hours_requested>40</hours_requested>
+    <notes>Family vacation</notes>
+    <status>Pending</status>
+    <remaining_hours>120</remaining_hours>
+    <remaining_days>15</remaining_days>
+  </x_hrh_it_vacreq_vacation_requests>
+  <x_hrh_it_vacreq_vacation_requests>
+    <employee email="asmith@hrh.ca"/>
+    <employee_name>Alice Smith</employee_name>
+    <start_date>2025-12-10</start_date>
+    <end_date>2025-12-12</end_date>
+    <hours_requested>24</hours_requested>
+    <notes>Personal time off</notes>
+    <status>Approved</status>
+    <remaining_hours>96</remaining_hours>
+    <remaining_days>12</remaining_days>
+  </x_hrh_it_vacreq_vacation_requests>
+  <x_hrh_it_vacreq_vacation_requests>
+    <employee email="bjohnson@hrh.ca"/>
+    <employee_name>Bob Johnson</employee_name>
+    <start_date>2025-12-15</start_date>
+    <end_date>2025-12-20</end_date>
+    <hours_requested>48</hours_requested>
+    <notes>Holiday break</notes>
+    <status>Declined</status>
+    <decline_reason>Conflicts with team schedule</decline_reason>
+    <remaining_hours>80</remaining_hours>
+    <remaining_days>10</remaining_days>
+  </x_hrh_it_vacreq_vacation_requests>
 </records>
