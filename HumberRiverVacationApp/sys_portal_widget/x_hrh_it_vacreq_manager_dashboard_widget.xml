@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+  <sp_widget action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_manager_dashboard</name>
+    <id>manager_vacation_dashboard</id>
+    <public>false</public>
+    <roles>x_hrh_it_vacreq_manager</roles>
+    <scope>x_hrh_it_vacreq</scope>
+    <data_table>x_hrh_it_vacreq_vacation_requests</data_table>
+    <template><![CDATA[
+<div class="manager-portal">
+  <div class="manager-header">
+    <h1>👔 Manager Dashboard</h1>
+    <p style="font-size: 18px; opacity: 0.9;">Review and approve team vacation requests</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number stat-pending">{{c.data.stats.pending}}</div>
+      <div class="stat-label">Pending Approval</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number stat-approved">{{c.data.stats.approved}}</div>
+      <div class="stat-label">Approved This Month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number stat-declined">{{c.data.stats.declined}}</div>
+      <div class="stat-label">Declined This Month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number stat-team">{{c.data.stats.team}}</div>
+      <div class="stat-label">Team Members</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">
+    <span class="section-icon">⏰</span>Pending Approvals
+  </h2>
+
+  <div ng-repeat="request in c.data.pendingRequests">
+    <div class="approval-card">
+      <div class="employee-info">
+        <div class="employee-avatar">{{request.employee_initials}}</div>
+        <div>
+          <div class="employee-name">{{request.employee_name}}</div>
+          <div style="color: #666; font-size: 14px;">{{request.employee_email}}</div>
+        </div>
+      </div>
+
+      <div class="request-details">
+        <div class="detail-row">
+          <span class="detail-label">📅 Start Date</span>
+          <span class="detail-value">{{request.start_date}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">📅 End Date</span>
+          <span class="detail-value">{{request.end_date}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">⏱️ Hours Requested</span>
+          <span class="detail-value">{{request.hours_requested}} hours</span>
+        </div>
+        <div class="detail-row" style="border-bottom: none;">
+          <span class="detail-label">💼 Remaining Balance</span>
+          <span class="detail-value">{{request.remaining_days}} days ({{request.remaining_hours}} hours)</span>
+        </div>
+      </div>
+
+      <div ng-if="request.notes" 
+           style="background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #2196f3;">
+        <div style="font-weight: 600; color: #1976d2; margin-bottom: 5px;">📝 Notes from Employee:</div>
+        <div style="color: #424242;">{{request.notes}}</div>
+      </div>
+
+      <div ng-if="request.overlapping_count > 0" 
+           style="background: #fff3e0; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ff9800;">
+        <div style="font-weight: 600; color: #f57c00; margin-bottom: 5px;">⚠️ Team Overlap Warning</div>
+        <div style="color: #424242;">{{request.overlapping_count}} other team member(s) on vacation during this period</div>
+      </div>
+
+      <div ng-if="request.it_changes_count > 0" 
+           style="background: #ffebee; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #f44336;">
+        <div style="font-weight: 600; color: #d32f2f; margin-bottom: 5px;">🔧 IT Changes Scheduled</div>
+        <div style="color: #424242;">{{request.it_changes_count}} IT change(s) scheduled during this vacation period</div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-approve" ng-click="c.approve(request.sys_id)">
+          ✓ Approve Request
+        </button>
+        <button class="btn-decline" ng-click="c.decline(request.sys_id)">
+          ✗ Decline Request
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="c.data.pendingRequests.length == 0" 
+       style="text-align: center; padding: 60px; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+    <div style="font-size: 64px; margin-bottom: 20px;">✅</div>
+    <h3 style="color: #666;">All caught up!</h3>
+    <p style="color: #999;">No pending vacation requests to review.</p>
+  </div>
+
+  <div class="calendar-view">
+    <h2><span class="section-icon">📊</span>Team Calendar - Upcoming Vacations</h2>
+    <div ng-repeat="item in c.data.upcomingVacations" class="timeline-item">
+      <div class="timeline-date">{{item.date_range}}</div>
+      <div class="timeline-employee">
+        <strong>{{item.employee_name}}</strong> - {{item.hours_requested}} hours
+      </div>
+      <span class="status-badge status-{{item.status | lowercase}}">{{item.status}}</span>
+    </div>
+
+    <div ng-if="c.data.upcomingVacations.length == 0" 
+         style="text-align: center; padding: 40px; color: #999;">
+      No upcoming vacations scheduled
+    </div>
+  </div>
+</div>
+    ]]></template>
+    <script><![CDATA[
+(function() {
+  var c = this;
+  
+  c.data.stats = {
+    pending: 0,
+    approved: 0,
+    declined: 0,
+    team: 0
+  };
+  
+  c.data.pendingRequests = [];
+  c.data.upcomingVacations = [];
+  
+  // Fetch statistics
+  c.server.get({
+    action: 'getStats'
+  }).then(function(response) {
+    c.data.stats = response.data.stats;
+  });
+  
+  // Fetch pending requests
+  c.server.get({
+    action: 'getPendingRequests'
+  }).then(function(response) {
+    c.data.pendingRequests = response.data.requests;
+  });
+  
+  // Fetch upcoming vacations
+  c.server.get({
+    action: 'getUpcomingVacations'
+  }).then(function(response) {
+    c.data.upcomingVacations = response.data.vacations;
+  });
+  
+  c.approve = function(sysId) {
+    spModal.confirm('Are you sure you want to approve this vacation request?').then(function(confirmed) {
+      if (confirmed) {
+        c.server.update({
+          action: 'approveRequest',
+          sys_id: sysId
+        }).then(function() {
+          spModal.alert('Request approved successfully!');
+          c.server.refresh();
+        });
+      }
+    });
+  };
+  
+  c.decline = function(sysId) {
+    spModal.prompt('Please provide a reason for declining:', '').then(function(reason) {
+      if (reason) {
+        c.server.update({
+          action: 'declineRequest',
+          sys_id: sysId,
+          reason: reason
+        }).then(function() {
+          spModal.alert('Request declined');
+          c.server.refresh();
+        });
+      }
+    });
+  };
+})();
+    ]]></script>
+    <server_script><![CDATA[
+(function() {
+  var action = input.action;
+  
+  if (action == 'getStats') {
+    var stats = {
+      pending: 0,
+      approved: 0,
+      declined: 0,
+      team: 0
+    };
+    
+    // Count pending
+    var gr = new GlideAggregate('x_hrh_it_vacreq_vacation_requests');
+    gr.addQuery('status', 'Pending');
+    gr.addAggregate('COUNT');
+    gr.query();
+    if (gr.next()) {
+      stats.pending = gr.getAggregate('COUNT');
+    }
+    
+    // Count approved this month
+    var gr2 = new GlideAggregate('x_hrh_it_vacreq_vacation_requests');
+    gr2.addQuery('status', 'Approved');
+    gr2.addQuery('sys_updated_on', '>=', gs.monthsAgo(1));
+    gr2.addAggregate('COUNT');
+    gr2.query();
+    if (gr2.next()) {
+      stats.approved = gr2.getAggregate('COUNT');
+    }
+    
+    // Count declined this month
+    var gr3 = new GlideAggregate('x_hrh_it_vacreq_vacation_requests');
+    gr3.addQuery('status', 'Declined');
+    gr3.addQuery('sys_updated_on', '>=', gs.monthsAgo(1));
+    gr3.addAggregate('COUNT');
+    gr3.query();
+    if (gr3.next()) {
+      stats.declined = gr3.getAggregate('COUNT');
+    }
+    
+    // TODO: Count team members (requires team definition)
+    stats.team = 12;
+    
+    data.stats = stats;
+  }
+  
+  if (action == 'getPendingRequests') {
+    var requests = [];
+    var gr = new GlideRecord('x_hrh_it_vacreq_vacation_requests');
+    gr.addQuery('status', 'Pending');
+    gr.orderBy('start_date');
+    gr.query();
+    
+    while (gr.next()) {
+      var empName = gr.getValue('employee_name') || 'Unknown';
+      var initials = empName.split(' ').map(function(n) { return n[0]; }).join('');
+      
+      requests.push({
+        sys_id: gr.getUniqueValue(),
+        employee_name: empName,
+        employee_initials: initials,
+        employee_email: gr.employee.email.toString(),
+        start_date: gr.getValue('start_date'),
+        end_date: gr.getValue('end_date'),
+        hours_requested: gr.getValue('hours_requested'),
+        remaining_hours: gr.getValue('remaining_hours') || '0',
+        remaining_days: gr.getValue('remaining_days') || '0',
+        notes: gr.getValue('notes'),
+        overlapping_count: 0, // TODO: Calculate overlaps
+        it_changes_count: 0 // TODO: Query IT changes
+      });
+    }
+    
+    data.requests = requests;
+  }
+  
+  if (action == 'getUpcomingVacations') {
+    var vacations = [];
+    var gr = new GlideRecord('x_hrh_it_vacreq_vacation_requests');
+    gr.addQuery('status', 'IN', 'Approved,Pending');
+    gr.addQuery('start_date', '>=', gs.nowDateTime());
+    gr.orderBy('start_date');
+    gr.setLimit(10);
+    gr.query();
+    
+    while (gr.next()) {
+      vacations.push({
+        employee_name: gr.getValue('employee_name'),
+        date_range: gr.getValue('start_date') + ' to ' + gr.getValue('end_date'),
+        hours_requested: gr.getValue('hours_requested'),
+        status: gr.getValue('status')
+      });
+    }
+    
+    data.vacations = vacations;
+  }
+  
+  if (action == 'approveRequest') {
+    var gr = new GlideRecord('x_hrh_it_vacreq_vacation_requests');
+    if (gr.get(input.sys_id)) {
+      gr.setValue('status', 'Approved');
+      gr.update();
+    }
+  }
+  
+  if (action == 'declineRequest') {
+    var gr = new GlideRecord('x_hrh_it_vacreq_vacation_requests');
+    if (gr.get(input.sys_id)) {
+      gr.setValue('status', 'Declined');
+      gr.setValue('decline_reason', input.reason);
+      gr.update();
+    }
+  }
+})();
+    ]]></server_script>
+  </sp_widget>
+</record_update>
+

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+  <sp_widget action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_employee_dashboard</name>
+    <id>employee_vacation_dashboard</id>
+    <public>false</public>
+    <roles>x_hrh_it_vacreq_employee</roles>
+    <scope>x_hrh_it_vacreq</scope>
+    <data_table>x_hrh_it_vacreq_vacation_requests</data_table>
+    <template><![CDATA[
+<div class="vacation-portal">
+  <div class="tropical-header">
+    <h1><span class="palm-decoration">🌴</span>My Vacation Time<span class="palm-decoration">🏖️</span></h1>
+    <p style="font-size: 18px; opacity: 0.9;">Plan your perfect getaway!</p>
+  </div>
+
+  <div class="balance-card">
+    <h2 style="color: #2c3e50; margin-bottom: 20px; font-weight: 700;">
+      <span class="palm-decoration">⏱️</span>Available Balance
+    </h2>
+    <div class="balance-display">
+      <div class="balance-item">
+        <div class="balance-number">{{c.data.balance.days}}</div>
+        <div class="balance-label">Days Available</div>
+      </div>
+      <div class="balance-item">
+        <div class="balance-number">{{c.data.balance.hours}}</div>
+        <div class="balance-label">Hours Available</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-bottom: 30px;">
+    <button class="btn-tropical" ng-click="c.newRequest()">
+      <span class="palm-decoration">🌺</span>Request New Vacation
+    </button>
+  </div>
+
+  <h2 class="section-title" style="color: white; margin-bottom: 20px;">
+    <span class="palm-decoration">📋</span>My Requests
+  </h2>
+
+  <div class="requests-grid">
+    <div class="vacation-card" ng-repeat="request in c.data.requests">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="margin: 0; color: #2c3e50; font-weight: 700;">
+          <span class="palm-decoration">🗓️</span>Vacation Request
+        </h3>
+        <span class="status-badge" 
+              ng-class="{'status-pending': request.status == 'Pending',
+                         'status-approved': request.status == 'Approved',
+                         'status-declined': request.status == 'Declined'}">
+          {{request.status}}
+        </span>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="color: #666; font-weight: 600;">Start Date</span>
+          <span style="color: #2c3e50; font-weight: 700;">{{request.start_date}}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="color: #666; font-weight: 600;">End Date</span>
+          <span style="color: #2c3e50; font-weight: 700;">{{request.end_date}}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: #666; font-weight: 600;">Hours</span>
+          <span style="color: #2c3e50; font-weight: 700;">{{request.hours_requested}}</span>
+        </div>
+      </div>
+
+      <div ng-if="request.notes" style="margin-bottom: 15px;">
+        <div style="color: #666; font-weight: 600; margin-bottom: 5px;">Notes:</div>
+        <div style="color: #2c3e50; font-style: italic;">{{request.notes}}</div>
+      </div>
+
+      <div ng-if="request.decline_reason" 
+           style="background: #ffebee; padding: 10px; border-radius: 8px; border-left: 4px solid #f44336;">
+        <div style="color: #f44336; font-weight: 600; margin-bottom: 5px;">Decline Reason:</div>
+        <div style="color: #c62828;">{{request.decline_reason}}</div>
+      </div>
+
+      <button ng-if="request.status == 'Pending'" 
+              class="btn-tropical" 
+              style="width: 100%; margin-top: 15px;"
+              ng-click="c.viewRequest(request.sys_id)">
+        View Details
+      </button>
+    </div>
+  </div>
+
+  <div ng-if="c.data.requests.length == 0" 
+       style="text-align: center; padding: 60px; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+    <div style="font-size: 64px; margin-bottom: 20px;">🏝️</div>
+    <h3 style="color: #666;">No vacation requests yet!</h3>
+    <p style="color: #999;">Click the button above to plan your first getaway.</p>
+  </div>
+</div>
+    ]]></template>
+    <script><![CDATA[
+(function() {
+  var c = this;
+  
+  c.data.balance = {
+    days: 15,
+    hours: 120
+  };
+  
+  c.data.requests = [];
+  
+  // Fetch user's vacation balance
+  c.server.get({
+    action: 'getBalance'
+  }).then(function(response) {
+    c.data.balance = response.data.balance;
+  });
+  
+  // Fetch user's requests
+  c.server.get({
+    action: 'getRequests'
+  }).then(function(response) {
+    c.data.requests = response.data.requests;
+  });
+  
+  c.newRequest = function() {
+    // Navigate to new request form
+    window.location.href = '/sp?id=form&table=x_hrh_it_vacreq_vacation_requests&sys_id=-1';
+  };
+  
+  c.viewRequest = function(sysId) {
+    window.location.href = '/sp?id=form&table=x_hrh_it_vacreq_vacation_requests&sys_id=' + sysId;
+  };
+})();
+    ]]></script>
+    <server_script><![CDATA[
+(function() {
+  var action = input.action;
+  
+  if (action == 'getBalance') {
+    // Fetch from HR API or mock data
+    data.balance = {
+      days: 15,
+      hours: 120
+    };
+  }
+  
+  if (action == 'getRequests') {
+    var requests = [];
+    var gr = new GlideRecord('x_hrh_it_vacreq_vacation_requests');
+    gr.addQuery('employee', gs.getUserID());
+    gr.orderByDesc('sys_created_on');
+    gr.query();
+    
+    while (gr.next()) {
+      requests.push({
+        sys_id: gr.getUniqueValue(),
+        start_date: gr.getValue('start_date'),
+        end_date: gr.getValue('end_date'),
+        hours_requested: gr.getValue('hours_requested'),
+        notes: gr.getValue('notes'),
+        status: gr.getValue('status'),
+        decline_reason: gr.getValue('decline_reason')
+      });
+    }
+    
+    data.requests = requests;
+  }
+})();
+    ]]></server_script>
+  </sp_widget>
+</record_update>
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_portal">
+  <sp_portal action="INSERT_OR_UPDATE">
+    <name>x_hrh_it_vacreq_vacation_portal</name>
+    <title>IT Vacation Portal</title>
+    <url_suffix>vacation</url_suffix>
+    <homepage display_value="Employee Home">x_hrh_it_vacreq_employee_home</homepage>
+    <logo/>
+    <quick_start_config/>
+    <theme display_value="Tropical Theme">x_hrh_it_vacreq_tropical_theme</theme>
+    <scope>x_hrh_it_vacreq</scope>
+  </sp_portal>
+</record_update>
+
